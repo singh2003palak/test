@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Details</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f7f7f7;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 15px;
+      text-decoration: none;
+      color: #1a73e8;
+      font-weight: bold;
+    }
+
+    .card {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .small { color: #555; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <a class="back" href="index.html">⬅ Back</a>
+
+    <div class="card" id="output">
+      Loading details...
+    </div>
+  </div>
+
+  <script>
+    async function loadDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const type = params.get("type");
+      const id = params.get("id");
+
+      const res = await fetch("./data.json");
+      const data = await res.json();
+
+      const output = document.getElementById("output");
+
+      if (type === "device") {
+        const device = data.devices.find(d => d.id === id);
+        if (!device) {
+          output.innerHTML = "<div class='title'>Not Found</div><div class='small'>Device not found</div>";
+          return;
+        }
+
+        output.innerHTML = `
+          <div class="title">📱 Device Details</div>
+          <div class="small"><b>Device Name:</b> ${device.deviceName}</div>
+          <div class="small"><b>Place:</b> ${device.place}</div>
+        `;
+        return;
+      }
+
+      if (type === "contact") {
+        const contact = data.contacts.find(c => c.id === id);
+        if (!contact) {
+          output.innerHTML = "<div class='title'>Not Found</div><div class='small'>Contact not found</div>";
+          return;
+        }
+
+        output.innerHTML = `
+          <div class="title">👤 Contact Details</div>
+          <div class="small"><b>Name:</b> ${contact.name}</div>
+          <div class="small"><b>Contact Number:</b> ${contact.contactNumber}</div>
+        `;
+        return;
+      }
+
+      output.innerHTML = "<div class='title'>Error</div><div class='small'>Invalid link parameters</div>";
+    }
+
+    loadDetails();
+  </script>
+</body>
+</html>
