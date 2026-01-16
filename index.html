@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surf Demo - Categories</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f7f7f7;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 { margin-top: 0; }
+    .small { color: #555; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #1a73e8;
+      color: white;
+    }
+
+    .btn:hover { opacity: 0.92; }
+
+    .list {
+      margin-top: 15px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .item {
+      display: block;
+      text-decoration: none;
+      color: black;
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
+    }
+
+    .item:hover {
+      background: #f0f8ff;
+    }
+
+    .title { font-weight: bold; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Surf Demo Page</h2>
+    <p class="small">Choose a category below:</p>
+
+    <button class="btn" onclick="showCategory('devices')">📱 Device Name</button>
+    <button class="btn" onclick="showCategory('contacts')">👤 Name + Contact Number</button>
+
+    <ul class="list" id="output"></ul>
+  </div>
+
+  <script>
+    let demoData = null;
+
+    async function loadData() {
+      const res = await fetch("./data.json");
+      demoData = await res.json();
+    }
+
+    function showCategory(type) {
+      const output = document.getElementById("output");
+      output.innerHTML = "";
+
+      if (!demoData) {
+        output.innerHTML = "<li class='item'>Loading data...</li>";
+        return;
+      }
+
+      if (type === "devices") {
+        output.innerHTML = demoData.devices.map(d => `
+          <li>
+            <a class="item" href="details.html?type=device&id=${encodeURIComponent(d.id)}">
+              <div class="title">${d.deviceName}</div>
+              <div class="small">Place: ${d.place}</div>
+            </a>
+          </li>
+        `).join("");
+      }
+
+      if (type === "contacts") {
+        output.innerHTML = demoData.contacts.map(c => `
+          <li>
+            <a class="item" href="details.html?type=contact&id=${encodeURIComponent(c.id)}">
+              <div class="title">${c.name}</div>
+              <div class="small">Contact: ${c.contactNumber}</div>
+            </a>
+          </li>
+        `).join("");
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
