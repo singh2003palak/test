@@ -1,0 +1,12 @@
+{
+  "devices": [
+    { "id": "d1", "deviceName": "Zebra TC52", "place": "Toronto" },
+    { "id": "d2", "deviceName": "Honeywell CK65", "place": "New York" },
+    { "id": "d3", "deviceName": "Samsung Tab A", "place": "London" }
+  ],
+  "contacts": [
+    { "id": "c1", "name": "John Smith", "contactNumber": "+1-647-123-4567" },
+    { "id": "c2", "name": "Emily Davis", "contactNumber": "+1-416-987-6543" },
+    { "id": "c3", "name": "Raj Patel", "contactNumber": "+91-98765-43210" }
+  ]
+}
